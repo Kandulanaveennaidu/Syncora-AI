@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Syncora AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Custom styles */
+      html {
+        scroll-behavior: smooth; /* Smooth scrolling */
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        background-color: #ffffff;
+        color: #1f2937; /* Default text color: gray-800 */
+        overflow-x: hidden; /* Prevent horizontal scroll */
+      }
+      #background-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+      /* Simple pulse animation for the button */
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+        }
+        50% {
+          transform: scale(1.05);
+          box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
+        }
+      }
+      .animate-pulse-custom {
+        animation: pulse 2s infinite;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 1;
+      }
+      .review-snippet {
+        background-color: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(4px);
+        border-radius: 0.75rem;
+        padding: 0.5rem 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #4b5563;
+        font-size: 0.875rem;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+      .avatar {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: #d1d5db;
+        display: inline-block;
+        margin-left: -8px;
+        border: 2px solid white;
+      }
+      .avatar:first-child {
+        margin-left: 0;
+      }
+      .feature-tag {
+        display: inline-block;
+        background-color: #1f2937;
+        color: #d1d5db;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+      }
+      .feature-image-placeholder {
+        background-color: #e5e7eb;
+        border-radius: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9ca3af;
+        font-size: 1rem;
+        min-height: 300px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        position: relative;
+      }
+      .dashboard-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        position: relative;
+        z-index: 1;
+        min-height: 300px;
+        max-height: 450px;
+        border-radius: 0.75rem;
+      }
+      .feature-image-placeholder::before {
+        content: "Loading image...";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f3f4f6;
+        z-index: 0;
+      }
+      .problem-section-bg {
+        background: linear-gradient(
+          180deg,
+          #ffffff 0%,
+          #f0f5ff 50%,
+          #ffffff 100%
+        );
+      }
+      .problem-card {
+        background-color: #111827;
+        color: #d1d5db;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1),
+          0 4px 10px rgba(0, 0, 0, 0.06);
+        border: 1px solid #374151;
+      }
+      .checklist li {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 0.75rem;
+        color: #374151;
+      }
+      .checklist i {
+        color: #3b82f6;
+        margin-right: 0.625rem;
+        margin-top: 0.25rem;
+        font-size: 1.125rem;
+      }
+      .trusted-logo {
+        height: 32px;
+        width: auto;
+        object-fit: contain;
+        filter: grayscale(100%) opacity(60%);
+        transition: filter 0.3s ease;
+      }
+      .trusted-logo:hover {
+        filter: grayscale(0%) opacity(100%);
+      }
+
+      /* Discover Section Styles */
+      .discover-section-bg {
+        background: linear-gradient(145deg, #60a5fa 0%, #3b82f6 100%);
+      } /* Blue gradient */
+      .discover-card {
+        background-color: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.75rem;
+        padding: 1rem 1.5rem;
+        color: #374151;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .discover-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+      .discover-card i {
+        color: #3b82f6;
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+      }
+
+      /* Pricing Section Styles */
+      .pricing-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.75rem;
+        padding: 2rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        background-color: white;
+      }
+      .pricing-card.recommended {
+        border-color: #3b82f6;
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.2);
+        background-color: #3b82f6; /* Changed from #1f2937 (black) to #3b82f6 (blue) */
+        color: white;
+        position: relative;
+      }
+      .pricing-card.recommended .recommended-badge {
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #1d4ed8; /* Darker blue for better contrast */
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .pricing-card h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      .pricing-card .price {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.25rem;
+      }
+      .pricing-card .price span {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #6b7280;
+      }
+      .pricing-card.recommended .price span {
+        color: #d1d5db;
+      }
+      .pricing-card ul {
+        margin-top: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      .pricing-card ul li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        font-size: 0.9rem;
+        color: #4b5563;
+      }
+      .pricing-card.recommended ul li {
+        color: #d1d5db;
+      }
+      .pricing-card ul li i {
+        color: #3b82f6;
+        margin-right: 0.5rem;
+        font-size: 1rem;
+      }
+      .pricing-card.recommended ul li i {
+        color: #60a5fa;
+      }
+      .pricing-card .cta-button {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+      }
+      .pricing-card .cta-button.primary {
+        background-color: #3b82f6;
+        color: white;
+      }
+      .pricing-card .cta-button.primary:hover {
+        background-color: #2563eb;
+      }
+      .pricing-card .cta-button.secondary {
+        border: 1px solid #3b82f6;
+        color: #3b82f6;
+      }
+      .pricing-card .cta-button.secondary:hover {
+        background-color: #eff6ff;
+      }
+      .pricing-card.recommended .cta-button.primary {
+        background-color: #ffffff;
+        color: #1f2937;
+      }
+      .pricing-card.recommended .cta-button.primary:hover {
+        background-color: #f3f4f6;
+      }
+      .pricing-card.recommended .cta-button.secondary {
+        border: 1px solid #ffffff;
+        color: #ffffff;
+      }
+      .pricing-card.recommended .cta-button.secondary:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      .pricing-card .trial-text {
+        font-size: 0.75rem;
+        color: #6b7280;
+        margin-top: 0.5rem;
+      }
+      .pricing-card.recommended .trial-text {
+        color: #9ca3af;
+      }
+
+      /* Callout Section Styles */
+      .callout-section {
+        border-radius: 1rem;
+        padding: 3rem 2rem;
+        text-align: center;
+      }
+      .callout-blue {
+        background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+        color: white;
+      }
+      .callout-lightblue {
+        background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 100%);
+        color: #1e3a8a;
+      } /* Adjusted text color for light blue */
+      .callout-section h2 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+      .callout-section p {
+        font-size: 1.125rem;
+        max-width: 600px;
+        margin: 0 auto 1.5rem auto;
+        opacity: 0.9;
+      }
+      .callout-section .cta-button {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        border: 1px solid white;
+      }
+      .callout-section .cta-button:hover {
+        transform: translateY(-2px);
+      }
+      .callout-blue .cta-button {
+        background-color: white;
+        color: #3b82f6;
+      }
+      .callout-blue .cta-button:hover {
+        background-color: #f9fafb;
+      }
+      .callout-lightblue .cta-button {
+        background-color: #1e3a8a;
+        color: white;
+        border-color: #1e3a8a;
+      } /* Adjusted button colors */
+      .callout-lightblue .cta-button:hover {
+        background-color: #1c3370;
+      }
+
+      /* Safe & Efficient Section */
+      .world-map-placeholder {
+        background-image: url("https://placehold.co/800x400/f0f5ff/d1d5db?text=World+Map+Graphic"); /* Placeholder URL */
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 300px; /* Adjust as needed */
+        position: relative;
+      }
+
+      /* FAQ Section Styles */
+      .faq-section-bg {
+        background: linear-gradient(
+          180deg,
+          #ffffff 0%,
+          #f3f9ff 50%,
+          #ffffff 100%
+        );
+      }
+      .faq-item {
+        background-color: white;
+        border: 1px solid #e0e7ff;
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: box-shadow 0.3s ease;
+      }
+      .faq-item:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      }
+      .faq-question {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.25rem 1.75rem;
+        cursor: pointer;
+        font-weight: 600;
+        color: #1f2937;
+        transition: background-color 0.2s ease;
+      }
+      .faq-question:hover {
+        background-color: #f9fafb;
+      }
+      .faq-answer {
+        padding: 0 1.75rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease-in-out, padding-top 0.35s ease-in-out,
+          padding-bottom 0.35s ease-in-out;
+        color: #4b5563;
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+      .faq-item.active .faq-answer {
+        max-height: 400px;
+        padding-top: 0.5rem;
+        padding-bottom: 1.25rem;
+      }
+      .faq-item.active .faq-icon {
+        transform: rotate(135deg);
+        color: #3b82f6;
+      }
+      .faq-icon {
+        transition: transform 0.35s ease-in-out, color 0.3s ease;
+        color: #9ca3af;
+        font-size: 0.875rem;
+      }
+
+      /* World Map Section */
+      .world-map-container {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding-bottom: 50%; /* Maintain 2:1 aspect ratio */
+        background: #e0f2fe; /* Light blue background */
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .world-map-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        opacity: 0.3; /* Match the faint grid-like background */
+        z-index: 1;
+      }
+
+      .avatar-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+      }
+
+      .avatar {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 2px solid #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transform: translate(
+          -50%,
+          -50%
+        ); /* Center the avatar on its position */
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .world-map-container {
+          padding-bottom: 60%;
+        }
+        .avatar {
+          width: 40px;
+          height: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="relative min-h-screen flex flex-col items-center justify-center px-4 text-center overflow-hidden"
+    >
+      <canvas id="background-canvas"></canvas>
+      <header
+        class="absolute top-0 left-0 right-0 p-4 sm:p-6 flex justify-between items-center w-full max-w-7xl mx-auto z-10"
+      >
+        <div class="text-2xl font-bold text-gray-900">
+          <span class="text-blue-500 font-black">~</span> Syncora AI
+        </div>
+        <nav class="flex items-center space-x-2 sm:space-x-4">
+          <a
+            href="#"
+            class="text-gray-600 hover:text-gray-900 transition duration-200 px-3 py-1.5 rounded-md text-sm font-medium"
+            >Login</a
+          >
+          <a
+            href="#"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm font-medium transition duration-200 shadow-md"
+            >Free Trial</a
+          >
+        </nav>
+      </header>
+      <main
+        class="flex flex-col items-center justify-center flex-grow mt-16 sm:mt-0 hero-content"
+      >
+        <p
+          class="text-sm font-medium text-blue-600 uppercase tracking-wider mb-2"
+        >
+          THE #1 AI VOICE PLATFORM FOR AGENCIES
+        </p>
+        <h1
+          class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-tight mb-4"
+        >
+          Streamlined AI-Powered Calls
+        </h1>
+        <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl">
+          Pioneering the Next Era of AI Communication
+        </p>
+        <button
+          class="bg-blue-500 hover:bg-blue-600 text-white rounded-full w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center shadow-lg mb-8 animate-pulse-custom transition duration-300 ease-in-out transform hover:scale-105"
+        >
+          <i class="fas fa-microphone text-3xl sm:text-4xl"></i>
+        </button>
+        <div class="review-snippet">
+          <div class="flex space-x-2">
+            <span class="avatar w-10 h-10 rounded-full overflow-hidden">
+              <img src="https://i.pravatar.cc/40?img=1" alt="User 1" />
+            </span>
+            <span class="avatar w-10 h-10 rounded-full overflow-hidden">
+              <img src="https://i.pravatar.cc/40?img=2" alt="User 2" />
+            </span>
+            <span class="avatar w-10 h-10 rounded-full overflow-hidden">
+              <img src="https://i.pravatar.cc/40?img=3" alt="User 3" />
+            </span>
+          </div>
+
+          <div>
+            <span class="font-semibold text-gray-700">4.9/5 star reviews</span
+            ><span class="block text-xs text-gray-500"
+              >Hundreds of happy customers worldwide</span
+            >
+          </div>
+        </div>
+      </main>
+    </div>
+    <section class="py-12 bg-white">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p
+          class="text-center text-sm font-semibold text-gray-500 uppercase tracking-wider mb-8"
+        >
+          Trusted By
+        </p>
+        <div
+          class="flex flex-wrap justify-center items-center gap-x-8 gap-y-6 md:gap-x-12 lg:gap-x-16"
+        ></div>
+      </div>
+    </section>
+
+    <section class="py-16 sm:py-24 problem-section-bg">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p
+          class="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3"
+        >
+          THE CHALLENGE
+        </p>
+        <h2
+          class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+        >
+          Your Agency's Leads Are Slipping Away
+        </h2>
+        <p class="text-lg text-gray-600 mb-12">
+          Here's what’s holding you back:
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+          <div class="problem-card">
+            <h3 class="text-xl font-semibold text-white mb-3">
+              Declining Client Loyalty
+            </h3>
+            <p class="text-gray-400 leading-relaxed">
+              Clients demand consistent results. Weak leads disappoint them,
+              driving them to competitors.
+            </p>
+          </div>
+          <div class="problem-card">
+            <h3 class="text-xl font-semibold text-white mb-3">
+              Inefficient Staffing
+            </h3>
+            <p class="text-gray-400 leading-relaxed">
+              Relying on virtual assistants or hiring new talent? It’s costly
+              and delivers uneven outcomes.
+            </p>
+          </div>
+          <div class="problem-card">
+            <h3 class="text-xl font-semibold text-white mb-3">
+              Stalled Agency Growth
+            </h3>
+            <p class="text-gray-400 leading-relaxed">
+              Frequent client turnover erodes long-term value, keeping your
+              agency from scaling.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 sm:py-24 bg-white overflow-hidden">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div class="order-last md:order-first">
+            <div class="feature-image-placeholder">
+              <img
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                alt="AI Lead Conversion Dashboard"
+                class="dashboard-image"
+                onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/e5e7eb/6b7280?text=AI+Lead+Conversion';"
+              />
+            </div>
+          </div>
+          <div>
+            <span class="feature-tag">Engage and Convert</span>
+            <h2
+              class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 leading-tight"
+            >
+              Transform leads in moments
+            </h2>
+            <p class="text-lg text-gray-600 mb-6">
+              Capture every opportunity with rapid response, seamless
+              automation, and integrated multi-channel outreach.
+            </p>
+            <ul class="checklist mb-8">
+              <li>
+                <i class="fas fa-check-circle"></i>Engage leads through inbound
+                or outbound interactions
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i>Built to address concerns and
+                uncover key needs
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i>Automated follow-up system to
+                maximize conversion rates
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i>Streamline lead vetting with
+                your custom qualification criteria
+              </li>
+            </ul>
+            <a
+              href="#"
+              class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-base font-medium transition duration-200 shadow-md"
+              >Create my FREE AI Voice Agent</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 sm:py-24 bg-gray-50 overflow-hidden">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <span class="feature-tag">Seamless Scheduling</span>
+            <h2
+              class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 leading-tight"
+            >
+              Effortlessly schedule with AI
+            </h2>
+            <p class="text-lg text-gray-600 mb-6">
+              Replace static booking links with dynamic, conversation-driven
+              scheduling.
+            </p>
+            <ul class="checklist mb-8">
+              <li>
+                <i class="fas fa-check-circle"></i>AI retrieves and displays
+                your calendar’s open slots
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i>Confirms and books the chosen
+                time slot automatically
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i>Handles the entire scheduling
+                process via conversational AI
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i>Fully synced with your
+                GoHighLevel platform
+              </li>
+            </ul>
+            <a
+              href="#"
+              class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-base font-medium transition duration-200 shadow-md"
+              >Create my FREE AI Voice Agent</a
+            >
+          </div>
+          <div class="order-first md:order-last">
+            <div class="feature-image-placeholder">
+              <img
+                src="https://images.unsplash.com/photo-1611224885990-ab7363d1f2a9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                alt="AI Calendar Booking Interface"
+                class="dashboard-image"
+                onerror="this.onerror=null; this.src='https://cdn.pixabay.com/photo/2018/04/05/10/10/business-3292745_1280.jpg';"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 sm:py-24 discover-section-bg text-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p
+          class="text-sm font-semibold text-blue-200 uppercase tracking-wider mb-3"
+        >
+          EXPLORE THE IMPACT
+        </p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-10">
+          How AI Voice Agents Elevate Your Agency
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10 text-left">
+          <div class="discover-card">
+            <p>
+              <i class="fas fa-calendar-check"></i>Streamlined scheduling and
+              instant call transfers.
+            </p>
+          </div>
+          <div class="discover-card">
+            <p>
+              <i class="fas fa-sync-alt"></i>Revival campaigns to re-engage for
+              you and your clients.
+            </p>
+          </div>
+          <div class="discover-card">
+            <p>
+              <i class="fas fa-phone-alt"></i>Ensure every call is answered with
+              a 24/7 virtual receptionist.
+            </p>
+          </div>
+          <div class="discover-card">
+            <p>
+              <i class="fas fa-chart-line"></i>Boost client retention and
+              results to scale your agency.
+            </p>
+          </div>
+        </div>
+        <a
+          href="#"
+          class="inline-block bg-white hover:bg-gray-100 text-blue-600 px-8 py-3 rounded-lg text-base font-semibold transition duration-200 shadow-md"
+        >
+          Create my FREE AI Voice Agent
+        </a>
+      </div>
+    </section>
+
+    <section id="pricing" class="py-16 sm:py-24 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2
+          class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+        >
+          Select the Ideal Plan to Grow Your Agency
+        </h2>
+        <p class="text-lg text-gray-600 mb-10">
+          Maximize Your Success with Tailored Pricing Options.
+        </p>
+        <a
+          href="#"
+          class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg text-base font-medium transition duration-200 shadow-md mb-12"
+        >
+          View pricing
+        </a>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+          <div class="pricing-card text-left">
+            <h3>STARTER</h3>
+            <p class="price">$97<span>/m</span></p>
+            <ul>
+              <li><i class="fas fa-check-circle"></i>1 AI Voice Agent</li>
+              <li>
+                <i class="fas fa-check-circle"></i>400 Minutes (Talk Time)
+              </li>
+              <li><i class="fas fa-check-circle"></i>10,000 Contacts</li>
+              <li><i class="fas fa-check-circle"></i>1 Workspace</li>
+              <li><i class="fas fa-check-circle"></i>Multi-language Support</li>
+              <li><i class="fas fa-check-circle"></i>Batch Campaigns</li>
+              <li>
+                <i class="fas fa-check-circle"></i>GHL & Cal.com Integration
+              </li>
+              <li><i class="fas fa-check-circle"></i>Instant Booking</li>
+              <li><i class="fas fa-check-circle"></i>Syncora AI Training Hub</li>
+              <li><i class="fas fa-check-circle"></i>Live Chat Support</li>
+            </ul>
+            <a href="#" class="cta-button secondary">Begin free trial</a>
+            <p class="trial-text">3-day free trial</p>
+          </div>
+
+          <div class="pricing-card text-left">
+            <h3>GROWTH</h3>
+            <p class="price">$297<span>/m</span></p>
+            <ul>
+              <li><i class="fas fa-check-circle"></i>10 AI Voice Agents</li>
+              <li>
+                <i class="fas fa-check-circle"></i>1200 Minutes (Talk Time)
+              </li>
+              <li><i class="fas fa-check-circle"></i>Unlimited Contacts</li>
+              <li><i class="fas fa-check-circle"></i>10 Workspaces</li>
+              <li><i class="fas fa-check-circle"></i>Multi-language Support</li>
+              <li><i class="fas fa-check-circle"></i>Batch Campaigns</li>
+              <li>
+                <i class="fas fa-check-circle"></i>GHL & Cal.com Integration
+              </li>
+              <li><i class="fas fa-check-circle"></i>Instant Booking</li>
+              <li><i class="fas fa-check-circle"></i>Live Call Routing</li>
+              <li><i class="fas fa-check-circle"></i>CRM Note Sync</li>
+              <li><i class="fas fa-check-circle"></i>Syncora AI Training Hub</li>
+              <li><i class="fas fa-check-circle"></i>Live Chat Support</li>
+            </ul>
+            <a href="#" class="cta-button secondary">Begin free trial</a>
+            <p class="trial-text">3-day free trial</p>
+          </div>
+
+          <div class="pricing-card recommended text-left">
+            <span class="recommended-badge">Recommended</span>
+            <h3>PRO</h3>
+            <p class="price">$497<span>/m</span></p>
+            <ul>
+              <li>
+                <i class="fas fa-check-circle"></i>Unlimited AI Voice Agents
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i>2,500 minutes (talk time)
+              </li>
+              <li><i class="fas fa-check-circle"></i>Unlimited Contacts</li>
+              <li><i class="fas fa-check-circle"></i>Unlimited Workspaces</li>
+              <li><i class="fas fa-check-circle"></i>Multi-language Support</li>
+              <li><i class="fas fa-check-circle"></i>Batch Campaigns</li>
+              <li>
+                <i class="fas fa-check-circle"></i>GHL & Cal.com Integration
+              </li>
+              <li><i class="fas fa-check-circle"></i>Instant Booking</li>
+              <li><i class="fas fa-check-circle"></i>Enhanced Call Routing</li>
+              <li>
+                <i class="fas fa-check-circle"></i>Comprehensive Knowledge Base
+              </li>
+              <li><i class="fas fa-check-circle"></i>CRM Note Sync</li>
+              <li><i class="fas fa-check-circle"></i>Syncora AI Training Hub</li>
+              <li><i class="fas fa-check-circle"></i>Priority Support</li>
+            </ul>
+            <a href="#" class="cta-button primary">Begin free trial</a>
+            <p class="trial-text">3-day free trial</p>
+          </div>
+
+          <div class="pricing-card text-left">
+            <h3>ELITE</h3>
+            <p class="price">$997<span>/m</span></p>
+            <p class="text-sm text-gray-600 mb-4">Everything in Pro plus:</p>
+            <ul>
+              <li><i class="fas fa-check-circle"></i>White-label Branding</li>
+              <li>
+                <i class="fas fa-check-circle"></i>4,000 minutes (talk time)
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i>AI Web Agents (Site Widget)
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i>Exclusive VIP Slack Support
+              </li>
+              <li><i class="fas fa-check-circle"></i>Screen Share Guidance</li>
+              <li>
+                <i class="fas fa-check-circle"></i>Premium Onboarding & Setup
+              </li>
+            </ul>
+            <a href="#" class="cta-button secondary">Schedule a call</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-12 sm:py-16 bg-white">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="callout-section callout-lightblue">
+          <h2>Skyline Solutions</h2>
+          <p>
+            Experience world-class reliability, flexibility, and dedicated
+            assistance. Offering Usage-based Discounts, Cloud PBX & API
+            Integrations, ISO 27001, PCI DSS, CCPA Compliance with Premium
+            Support and more.
+          </p>
+          <a href="#" class="cta-button">Get in touch</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 sm:py-24 bg-white">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p
+          class="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3"
+        >
+          Enabling Global Voice Automation
+        </p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          Smart & Reliable for Every Business
+        </h2>
+        <p class="text-lg text-gray-600 mb-10 max-w-3xl mx-auto">
+          Beyond expectations: AI agents that converse, convert, and learn
+          continuously — anytime, anywhere.
+        </p>
+        <a
+          href="#"
+          class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg text-base font-semibold transition duration-200 shadow-md mb-16"
+        >
+          Launch My Free AI Voice Assistant
+        </a>
+        <div class="world-map-container relative mx-auto">
+          <img
+            src="./images/world2.png"
+            alt="Illustration of global reach"
+            class="world-map-image"
+            onerror="this.onerror=null; this.src='https://via.placeholder.com/800x400/e0f2fe/9ca3af?text=Global+Map+Loading...';"
+          />
+          <div class="avatar-container">
+            <img
+              src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?w=50&h=50&fit=crop&auto=compress"
+              alt="User from North America"
+              class="avatar"
+              style="top: 15%; left: 15%"
+              onerror="this.onerror=null; this.src='https://via.placeholder.com/50/ffffff/000000?text=User';"
+            />
+            <img
+              src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?w=50&h=50&fit=crop&auto=compress"
+              alt="User from North America"
+              class="avatar"
+              style="top: 30%; left: 20%"
+              onerror="this.onerror=null; this.src='https://via.placeholder.com/50/ffffff/000000?text=User';"
+            />
+            <img
+              src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?w=50&h=50&fit=crop&auto=compress"
+              alt="User from South America"
+              class="avatar"
+              style="top: 70%; left: 25%"
+              onerror="this.onerror=null; this.src='https://via.placeholder.com/50/ffffff/000000?text=User';"
+            />
+            <img
+              src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?w=50&h=50&fit=crop&auto=compress"
+              alt="User from Africa"
+              class="avatar"
+              style="top: 60%; left: 40%"
+              onerror="this.onerror=null; this.src='https://via.placeholder.com/50/ffffff/000000?text=User';"
+            />
+            <img
+              src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?w=50&h=50&fit=crop&auto=compress"
+              alt="User from Europe"
+              class="avatar"
+              style="top: 20%; left: 45%"
+              onerror="this.onerror=null; this.src='https://via.placeholder.com/50/ffffff/000000?text=User';"
+            />
+            <img
+              src="https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?w=50&h=50&fit=crop&auto=compress"
+              alt="User from Asia"
+              class="avatar"
+              style="top: 25%; left: 70%"
+              onerror="this.onerror=null; this.src='https://via.placeholder.com/50/ffffff/000000?text=User';"
+            />
+            <img
+              src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?w=50&h=50&fit=crop&auto=compress"
+              alt="User from Asia"
+              class="avatar"
+              style="top: 40%; left: 65%"
+              onerror="this.onerror=null; this.src='https://via.placeholder.com/50/ffffff/000000?text=User';"
+            />
+            <img
+              src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?w=50&h=50&fit=crop&auto=compress"
+              alt="User from Australia"
+              class="avatar"
+              style="top: 75%; left: 75%"
+              onerror="this.onerror=null; this.src='https://via.placeholder.com/50/ffffff/000000?text=User';"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-12 sm:py-16 bg-gray-50">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="callout-section callout-blue">
+          <h2>Become a Partner</h2>
+          <p>
+            Would you like to become a Syncora AI Affiliate Partner, join a growing
+            community of Voice AI Integrators and Content creators and earn by
+            making AI communication more efficient?
+          </p>
+          <a href="#" class="cta-button">Learn More</a>
+        </div>
+      </div>
+    </section>
+    <section class="py-16 sm:py-24 bg-white">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <p
+            class="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-3"
+          >
+            Still Got Questions?
+          </p>
+          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">
+            Frequently Asked Questions
+          </h2>
+        </div>
+        <div id="faq-accordion" class="space-y-4">
+          <!-- FAQ Item -->
+          <div
+            class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+          >
+            <button
+              class="faq-question flex items-center justify-between w-full p-4 text-left text-gray-900 font-medium focus:outline-none hover:bg-gray-50 transition"
+            >
+              <span>Do you have an Affiliate Partner Program?</span>
+              <i class="fas fa-plus faq-icon"></i>
+            </button>
+            <div class="faq-answer hidden p-4 text-gray-600">
+              Yes, we do! You can learn more about becoming a Syncora AI Affiliate
+              Partner and join our growing community by clicking the "Learn
+              More" button in the section above.
+            </div>
+          </div>
+
+          <div
+            class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+          >
+            <button
+              class="faq-question flex items-center justify-between w-full p-4 text-left text-gray-900 font-medium focus:outline-none hover:bg-gray-50 transition"
+            >
+              <span>Can I Whitelabel Syncora AI AI?</span>
+              <i class="fas fa-plus faq-icon"></i>
+            </button>
+            <div class="faq-answer hidden p-4 text-gray-600">
+              Whitelabeling is available as part of our Agency VIP plan. This
+              allows you to present the Syncora AI platform under your own brand.
+            </div>
+          </div>
+
+          <div
+            class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+          >
+            <button
+              class="faq-question flex items-center justify-between w-full p-4 text-left text-gray-900 font-medium focus:outline-none hover:bg-gray-50 transition"
+            >
+              <span>Can I connect multiple GoHighLevel sub-accounts?</span>
+              <i class="fas fa-plus faq-icon"></i>
+            </button>
+            <div class="faq-answer hidden p-4 text-gray-600">
+              Yes, depending on your plan, you can manage multiple workspaces,
+              allowing you to connect and manage different GoHighLevel
+              sub-accounts or other integrations separately.
+            </div>
+          </div>
+
+          <div
+            class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+          >
+            <button
+              class="faq-question flex items-center justify-between w-full p-4 text-left text-gray-900 font-medium focus:outline-none hover:bg-gray-50 transition"
+            >
+              <span>Can I make outbound and inbound calls with Syncora AI AI?</span>
+              <i class="fas fa-plus faq-icon"></i>
+            </button>
+            <div class="faq-answer hidden p-4 text-gray-600">
+              Absolutely! Syncora AI AI is designed for both inbound call handling
+              (like a 24/7 receptionist) and outbound calling campaigns for lead
+              nurturing, reactivation, and more.
+            </div>
+          </div>
+
+          <div
+            class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+          >
+            <button
+              class="faq-question flex items-center justify-between w-full p-4 text-left text-gray-900 font-medium focus:outline-none hover:bg-gray-50 transition"
+            >
+              <span>Do I need to bring my own Twilio and other APIs?</span>
+              <i class="fas fa-plus faq-icon"></i>
+            </button>
+            <div class="faq-answer hidden p-4 text-gray-600">
+              No, Syncora AI typically handles the core telephony infrastructure.
+              While specific integrations might require API keys (like
+              GoHighLevel), the basic calling functionality is usually included.
+              Check specific plan details for confirmation.
+            </div>
+          </div>
+
+          <div
+            class="faq-item border border-gray-200 rounded-lg overflow-hidden"
+          >
+            <button
+              class="faq-question flex items-center justify-between w-full p-4 text-left text-gray-900 font-medium focus:outline-none hover:bg-gray-50 transition"
+            >
+              <span>What languages does Syncora AI AI support?</span>
+              <i class="fas fa-plus faq-icon"></i>
+            </button>
+            <div class="faq-answer hidden p-4 text-gray-600">
+              Syncora AI supports multiple languages to cater to diverse customer
+              bases. Please refer to our documentation or contact support for
+              the current list of supported languages.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-gray-800 text-gray-400 py-8">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+        <p class="mb-2">
+          Need resources and support?
+          <a href="#" class="text-blue-400 hover:text-blue-300 font-medium"
+            >Affiliate Partner</a
+          >
+        </p>
+        <p>
+          &copy; 2025 Syncora AI Replica |
+          <a href="#" class="hover:text-gray-300">Terms & Conditions</a>
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // --- Canvas Animation ---
+      const canvas = document.getElementById("background-canvas");
+      const ctx = canvas.getContext("2d");
+      let width, height;
+      let tick = 0;
+      const heroSection = document.querySelector(".relative.min-h-screen");
+
+      const waveConfig = [
+        {
+          color: "rgba(59, 130, 246, 0.15)",
+          amplitude: 80,
+          frequency: 0.004,
+          speed: 0.006,
+          offset: 0,
+          thickness: 2,
+        },
+        {
+          color: "rgba(96, 165, 250, 0.1)",
+          amplitude: 100,
+          frequency: 0.003,
+          speed: 0.008,
+          offset: Math.PI / 2,
+          thickness: 2.5,
+        },
+        {
+          color: "rgba(147, 197, 253, 0.08)",
+          amplitude: 70,
+          frequency: 0.005,
+          speed: 0.005,
+          offset: Math.PI,
+          thickness: 1.5,
+        },
+        {
+          color: "rgba(209, 213, 219, 0.1)",
+          amplitude: 50,
+          frequency: 0.006,
+          speed: 0.007,
+          offset: (3 * Math.PI) / 2,
+          thickness: 1,
+        },
+      ];
+
+      function resizeCanvas() {
+        if (!heroSection) return; // Exit if hero section not found
+        width = canvas.width = heroSection.offsetWidth;
+        height = canvas.height = heroSection.offsetHeight;
+      }
+
+      function drawWave(wave) {
+        ctx.beginPath();
+        ctx.strokeStyle = wave.color;
+        ctx.lineWidth = wave.thickness;
+        ctx.moveTo(
+          0,
+          height / 1.8 +
+            wave.amplitude * Math.sin(tick * wave.speed + wave.offset)
+        );
+        for (let x = 0; x < width + 10; x += 10) {
+          const yBase =
+            height / 1.8 +
+            wave.amplitude *
+              Math.sin(x * wave.frequency + tick * wave.speed + wave.offset);
+          const verticalShift = 20 * Math.sin(x * 0.0005 + tick * 0.002);
+          const noise = (Math.random() - 0.5) * 4;
+          ctx.lineTo(x, yBase + verticalShift + noise);
+        }
+        ctx.stroke();
+        ctx.closePath();
+      }
+
+      let animationFrameId = null;
+      function animate() {
+        if (!canvas) return; // Exit if canvas not found
+        // Clear canvas with subtle fade effect
+        ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+        ctx.fillRect(0, 0, width, height);
+
+        waveConfig.forEach((config) => drawWave(config));
+        tick++;
+        animationFrameId = requestAnimationFrame(animate);
+      }
+
+      function initAnimation() {
+        // Stop previous animation frame if running
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
+        resizeCanvas();
+        animate();
+      }
+
+      // Debounce resize function
+      let resizeTimeout;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(initAnimation, 150); // Adjust delay as needed
+      });
+
+      // Initial setup - use timeout to ensure layout is stable
+      setTimeout(initAnimation, 100);
+
+      // --- FAQ Accordion ---
+      const faqAccordion = document.getElementById("faq-accordion");
+      if (faqAccordion) {
+        const faqItems = faqAccordion.querySelectorAll(".faq-item");
+
+        faqItems.forEach((item) => {
+          const question = item.querySelector(".faq-question");
+          question.addEventListener("click", () => {
+            // Toggle active class on the clicked item
+            const isActive = item.classList.contains("active");
+
+            // Optional: Close other items when one is opened
+            // faqItems.forEach(otherItem => {
+            //     otherItem.classList.remove('active');
+            //     otherItem.querySelector('.faq-icon').classList.replace('fa-minus', 'fa-plus');
+            // });
+
+            if (!isActive) {
+              item.classList.add("active");
+              item
+                .querySelector(".faq-icon")
+                .classList.replace("fa-plus", "fa-minus");
+            } else {
+              item.classList.remove("active");
+              item
+                .querySelector(".faq-icon")
+                .classList.replace("fa-minus", "fa-plus");
+            }
+          });
+          // Initialize icon state
+          item
+            .querySelector(".faq-icon")
+            .classList.replace("fa-plus", "fa-plus"); // Ensure it starts as plus
+          if (item.classList.contains("active")) {
+            item
+              .querySelector(".faq-icon")
+              .classList.replace("fa-plus", "fa-minus");
+          }
+        });
+      }
+
+      // --- Logo Carousel Animation ---
+      // Fix for logos and add scrolling effect
+      document.addEventListener("DOMContentLoaded", function () {
+        // Better logo sources that are more reliable
+        const logoSources = [
+          {
+            src: "https://1000logos.net/wp-content/uploads/2016/10/Apple-Logo.png",
+            alt: "Apple Logo",
+          },
+          {
+            src: "https://1000logos.net/wp-content/uploads/2021/04/Adobe-logo.png",
+            alt: "Adobe Logo",
+          },
+          {
+            src: "https://1000logos.net/wp-content/uploads/2016/11/google-logo.jpg",
+            alt: "Google Logo",
+          },
+          {
+            src: "https://1000logos.net/wp-content/uploads/2016/10/Amazon-Logo.png",
+            alt: "Amazon Logo",
+          },
+          {
+            src: "https://1000logos.net/wp-content/uploads/2021/04/Facebook-logo.png",
+            alt: "Facebook Logo",
+          },
+          {
+            src: "https://1000logos.net/wp-content/uploads/2017/05/Netflix-Logo.png",
+            alt: "Netflix Logo",
+          },
+        ];
+
+        const logoContainer = document.querySelector(
+          ".flex.flex-wrap.justify-center.items-center"
+        );
+        if (logoContainer) {
+          // Clear existing logos
+          logoContainer.innerHTML = "";
+
+          // Add new class for scrolling
+          logoContainer.classList.remove("flex-wrap", "justify-center");
+          logoContainer.classList.add("logo-scroll-container");
+
+          // Add style for scrolling container
+          const style = document.createElement("style");
+          style.textContent = `
+            .logo-scroll-container {
+              display: flex;
+              width: 100%;
+              overflow: hidden;
+              position: relative;
+              padding: 10px 0;
+            }
+            .logo-scroll-inner {
+              display: flex;
+              animation: scroll-logos 30s linear infinite;
+              width: max-content;
+            }
+            .trusted-logo {
+              height: 40px;
+              margin: 0 30px;
+              opacity: 0.7;
+              transition: opacity 0.3s ease, transform 0.3s ease;
+            }
+            .trusted-logo:hover {
+              opacity: 1;
+              transform: scale(1.1);
+              filter: none;
+            }
+            @keyframes scroll-logos {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+          `;
+          document.head.appendChild(style);
+
+          // Create scrolling inner container
+          const scrollInner = document.createElement("div");
+          scrollInner.className = "logo-scroll-inner";
+
+          // Add logos twice (for seamless looping)
+          const allLogos = [...logoSources, ...logoSources];
+
+          allLogos.forEach((logo) => {
+            const img = document.createElement("img");
+            img.src = logo.src;
+            img.alt = logo.alt;
+            img.className = "trusted-logo";
+            // Add error handling for images
+            img.onerror = function () {
+              this.src =
+                "https://via.placeholder.com/150x50/f3f4f6/9ca3af?text=Brand+Logo";
+            };
+            scrollInner.appendChild(img);
+          });
+
+          logoContainer.appendChild(scrollInner);
+        }
+      });
+
+      // Ensure images load properly
+      document.addEventListener("DOMContentLoaded", function () {
+        function checkImages() {
+          const images = document.querySelectorAll(".dashboard-image");
+          images.forEach((img) => {
+            img.onerror = function () {
+              this.onerror = null;
+              this.src =
+                "https://via.placeholder.com/600x400/e5e7eb/6b7280?text=Image+Not+Available";
+            };
+            img.style.display = "block";
+          });
+        }
+        setTimeout(checkImages, 500);
+      });
+
+      // Add specific check for the calendar booking image
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get the calendar booking image specifically
+        const calendarImage = document.querySelector(
+          ".order-first.md\\:order-last .dashboard-image"
+        );
+
+        if (calendarImage) {
+          // Force reload the image if it didn't load properly
+          calendarImage.onload = function () {
+            console.log("Calendar image loaded successfully");
+          };
+
+          calendarImage.onerror = function () {
+            console.log("Calendar image failed to load, trying fallback");
+            this.onerror = null;
+            this.src =
+              "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80";
+          };
+
+          // Try reloading the image after a short delay
+          setTimeout(function () {
+            if (!calendarImage.complete || calendarImage.naturalWidth === 0) {
+              calendarImage.src =
+                "https://images.unsplash.com/photo-1587740896339-96a76170508d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80";
+            }
+          }, 3000);
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+          // Ensure map image loads
+          const mapImage = document.querySelector(".world-map-image");
+          if (mapImage) {
+            mapImage.addEventListener("error", () => {
+              console.warn("World map image failed to load, using fallback.");
+              mapImage.src =
+                "https://via.placeholder.com/800x400/e0f2fe/9ca3af?text=World+Map+Loading...";
+            });
+            setTimeout(() => {
+              if (!mapImage.complete || mapImage.naturalWidth === 0) {
+                mapImage.src =
+                  "https://www.publicdomainpictures.net/pictures/40000/velka/world-map-background.jpg";
+              }
+            }, 2000);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
