@@ -399,7 +399,6 @@
         background-color: #f9fafb;
       }
       .faq-answer {
-        padding: 0 1.75rem;
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.35s ease-in-out, padding-top 0.35s ease-in-out,
@@ -484,65 +483,67 @@
   </head>
   <body>
     <div
-      class="relative min-h-screen flex flex-col items-center justify-center px-4 text-center overflow-hidden"
+      class="relative min-h-screen flex flex-col items-center justify-center px-3 text-center overflow-hidden"
+      style="min-height: 75vh"
     >
       <canvas id="background-canvas"></canvas>
       <header
-        class="absolute top-0 left-0 right-0 p-4 sm:p-6 flex justify-between items-center w-full max-w-7xl mx-auto z-10"
+        class="absolute top-0 left-0 right-0 p-2 sm:p-3 flex justify-between items-center w-full max-w-5xl mx-auto z-10"
       >
-        <div class="text-2xl font-bold text-gray-900">
+        <div class="text-lg font-bold text-gray-900">
           <span class="text-blue-500 font-black">~</span> Syncora AI
         </div>
-        <nav class="flex items-center space-x-2 sm:space-x-4">
+        <nav class="flex items-center space-x-1 sm:space-x-2">
           <a
             href="#"
-            class="text-gray-600 hover:text-gray-900 transition duration-200 px-3 py-1.5 rounded-md text-sm font-medium"
+            class="text-gray-600 hover:text-gray-900 transition duration-200 px-1.5 py-0.5 rounded-md text-xs font-medium"
             >Login</a
           >
           <a
             href="#"
-            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm font-medium transition duration-200 shadow-md"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-2.5 py-0.5 rounded-md text-xs font-medium transition duration-200 shadow-md"
             >Free Trial</a
           >
         </nav>
       </header>
       <main
-        class="flex flex-col items-center justify-center flex-grow mt-16 sm:mt-0 hero-content"
+        class="flex flex-col items-center justify-center flex-grow mt-10 sm:mt-0 hero-content"
       >
         <p
-          class="text-sm font-medium text-blue-600 uppercase tracking-wider mb-2"
+          class="text-sm font-medium text-blue-600 uppercase tracking-wider mb-1"
         >
           THE #1 AI VOICE PLATFORM FOR AGENCIES
         </p>
         <h1
-          class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 leading-tight mb-4"
+          class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-3"
         >
           Streamlined AI-Powered Calls
         </h1>
-        <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl">
+        <p class="text-base sm:text-lg text-gray-600 mb-5 max-w-xl">
           Pioneering the Next Era of AI Communication
         </p>
         <button
-          class="bg-blue-500 hover:bg-blue-600 text-white rounded-full w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center shadow-lg mb-8 animate-pulse-custom transition duration-300 ease-in-out transform hover:scale-105"
+          class="bg-blue-500 hover:bg-blue-600 text-white rounded-full w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center shadow-lg mb-6 animate-pulse-custom transition duration-300 ease-in-out transform hover:scale-105"
         >
-          <i class="fas fa-microphone text-3xl sm:text-4xl"></i>
+          <i class="fas fa-microphone text-2xl sm:text-3xl"></i>
         </button>
-        <div class="review-snippet">
-          <div class="flex space-x-2">
-            <span class="avatar w-10 h-10 rounded-full overflow-hidden">
+        <div class="review-snippet flex items-center space-x-2.5">
+          <div class="flex space-x-1">
+            <span class="avatar w-8 h-8 rounded-full overflow-hidden">
               <img src="https://i.pravatar.cc/40?img=1" alt="User 1" />
             </span>
-            <span class="avatar w-10 h-10 rounded-full overflow-hidden">
+            <span class="avatar w-8 h-8 rounded-full overflow-hidden">
               <img src="https://i.pravatar.cc/40?img=2" alt="User 2" />
             </span>
-            <span class="avatar w-10 h-10 rounded-full overflow-hidden">
+            <span class="avatar w-8 h-8 rounded-full overflow-hidden">
               <img src="https://i.pravatar.cc/40?img=3" alt="User 3" />
             </span>
           </div>
-
           <div>
-            <span class="font-semibold text-gray-700">4.9/5 star reviews</span
-            ><span class="block text-xs text-gray-500"
+            <span class="font-semibold text-gray-700 text-sm"
+              >4.9/5 star reviews</span
+            >
+            <span class="block text-xs text-gray-500"
               >Hundreds of happy customers worldwide</span
             >
           </div>
@@ -792,7 +793,9 @@
                 <i class="fas fa-check-circle"></i>GHL & Cal.com Integration
               </li>
               <li><i class="fas fa-check-circle"></i>Instant Booking</li>
-              <li><i class="fas fa-check-circle"></i>Syncora AI Training Hub</li>
+              <li>
+                <i class="fas fa-check-circle"></i>Syncora AI Training Hub
+              </li>
               <li><i class="fas fa-check-circle"></i>Live Chat Support</li>
             </ul>
             <a href="#" class="cta-button secondary">Begin free trial</a>
@@ -817,7 +820,9 @@
               <li><i class="fas fa-check-circle"></i>Instant Booking</li>
               <li><i class="fas fa-check-circle"></i>Live Call Routing</li>
               <li><i class="fas fa-check-circle"></i>CRM Note Sync</li>
-              <li><i class="fas fa-check-circle"></i>Syncora AI Training Hub</li>
+              <li>
+                <i class="fas fa-check-circle"></i>Syncora AI Training Hub
+              </li>
               <li><i class="fas fa-check-circle"></i>Live Chat Support</li>
             </ul>
             <a href="#" class="cta-button secondary">Begin free trial</a>
@@ -848,7 +853,9 @@
                 <i class="fas fa-check-circle"></i>Comprehensive Knowledge Base
               </li>
               <li><i class="fas fa-check-circle"></i>CRM Note Sync</li>
-              <li><i class="fas fa-check-circle"></i>Syncora AI Training Hub</li>
+              <li>
+                <i class="fas fa-check-circle"></i>Syncora AI Training Hub
+              </li>
               <li><i class="fas fa-check-circle"></i>Priority Support</li>
             </ul>
             <a href="#" class="cta-button primary">Begin free trial</a>
@@ -990,14 +997,15 @@
         <div class="callout-section callout-blue">
           <h2>Become a Partner</h2>
           <p>
-            Would you like to become a Syncora AI Affiliate Partner, join a growing
-            community of Voice AI Integrators and Content creators and earn by
-            making AI communication more efficient?
+            Would you like to become a Syncora AI Affiliate Partner, join a
+            growing community of Voice AI Integrators and Content creators and
+            earn by making AI communication more efficient?
           </p>
           <a href="#" class="cta-button">Learn More</a>
         </div>
       </div>
     </section>
+
     <section class="py-16 sm:py-24 bg-white">
       <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
@@ -1021,10 +1029,10 @@
               <span>Do you have an Affiliate Partner Program?</span>
               <i class="fas fa-plus faq-icon"></i>
             </button>
-            <div class="faq-answer hidden p-4 text-gray-600">
-              Yes, we do! You can learn more about becoming a Syncora AI Affiliate
-              Partner and join our growing community by clicking the "Learn
-              More" button in the section above.
+            <div class="faq-answer text-gray-600">
+              Yes, we do! You can learn more about becoming a Syncora AI
+              Affiliate Partner and join our growing community by clicking the
+              "Learn More" button in the section above.
             </div>
           </div>
 
@@ -1037,9 +1045,10 @@
               <span>Can I Whitelabel Syncora AI AI?</span>
               <i class="fas fa-plus faq-icon"></i>
             </button>
-            <div class="faq-answer hidden p-4 text-gray-600">
+            <div class="faq-answer text-gray-600">
               Whitelabeling is available as part of our Agency VIP plan. This
-              allows you to present the Syncora AI platform under your own brand.
+              allows you to present the Syncora AI platform under your own
+              brand.
             </div>
           </div>
 
@@ -1052,7 +1061,7 @@
               <span>Can I connect multiple GoHighLevel sub-accounts?</span>
               <i class="fas fa-plus faq-icon"></i>
             </button>
-            <div class="faq-answer hidden p-4 text-gray-600">
+            <div class="faq-answer text-gray-600">
               Yes, depending on your plan, you can manage multiple workspaces,
               allowing you to connect and manage different GoHighLevel
               sub-accounts or other integrations separately.
@@ -1065,13 +1074,15 @@
             <button
               class="faq-question flex items-center justify-between w-full p-4 text-left text-gray-900 font-medium focus:outline-none hover:bg-gray-50 transition"
             >
-              <span>Can I make outbound and inbound calls with Syncora AI AI?</span>
+              <span
+                >Can I make outbound and inbound calls with Syncora AI AI?</span
+              >
               <i class="fas fa-plus faq-icon"></i>
             </button>
-            <div class="faq-answer hidden p-4 text-gray-600">
-              Absolutely! Syncora AI AI is designed for both inbound call handling
-              (like a 24/7 receptionist) and outbound calling campaigns for lead
-              nurturing, reactivation, and more.
+            <div class="faq-answer text-gray-600">
+              Absolutely! Syncora AI AI is designed for both inbound call
+              handling (like a 24/7 receptionist) and outbound calling campaigns
+              for lead nurturing, reactivation, and more.
             </div>
           </div>
 
@@ -1084,11 +1095,11 @@
               <span>Do I need to bring my own Twilio and other APIs?</span>
               <i class="fas fa-plus faq-icon"></i>
             </button>
-            <div class="faq-answer hidden p-4 text-gray-600">
-              No, Syncora AI typically handles the core telephony infrastructure.
-              While specific integrations might require API keys (like
-              GoHighLevel), the basic calling functionality is usually included.
-              Check specific plan details for confirmation.
+            <div class="faq-answer text-gray-600">
+              No, Syncora AI typically handles the core telephony
+              infrastructure. While specific integrations might require API keys
+              (like GoHighLevel), the basic calling functionality is usually
+              included. Check specific plan details for confirmation.
             </div>
           </div>
 
@@ -1101,10 +1112,10 @@
               <span>What languages does Syncora AI AI support?</span>
               <i class="fas fa-plus faq-icon"></i>
             </button>
-            <div class="faq-answer hidden p-4 text-gray-600">
-              Syncora AI supports multiple languages to cater to diverse customer
-              bases. Please refer to our documentation or contact support for
-              the current list of supported languages.
+            <div class="faq-answer text-gray-600">
+              Syncora AI supports multiple languages to cater to diverse
+              customer bases. Please refer to our documentation or contact
+              support for the current list of supported languages.
             </div>
           </div>
         </div>
